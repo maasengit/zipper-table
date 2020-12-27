@@ -1,0 +1,10 @@
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 1, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 2, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 3, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 4, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 5, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 6, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 7, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 8, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 9, 1, 0, '2020-01-01', '9999-01-01');
+insert into `zipper`.`zipper-table` ( `business_id`, `created`, `deleted`, `start_date`, `end_date`) values ( 10, 1, 0, '2020-01-01', '9999-01-01');
