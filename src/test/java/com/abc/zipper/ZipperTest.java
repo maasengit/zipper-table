@@ -39,7 +39,7 @@ public class ZipperTest {
         cal.set(Calendar.YEAR, 2020);
         cal.set(Calendar.MONTH, 0);
         cal.set(Calendar.DAY_OF_MONTH, 2);
-        dao.create(11L, cal.getTime());
+        dao.create(11L, "张三", cal.getTime());
 
         List<Map<String, Object>> created = dao.findCreated(cal.getTime());
         assertEquals(1, created.size());
@@ -52,9 +52,11 @@ public class ZipperTest {
         assertEquals(11, all.size());
 
         // 更新1
-        dao.update(1L, cal.getTime());
+        dao.update(1L, "李四", cal.getTime());
         List<Map<String, Object>> updated = dao.findUpdated(cal.getTime());
         assertEquals(1L, updated.size());
+        assertEquals("李四", updated.get(0).get("name"));
+
         LOGGER.info("2020-01-02更新的数据: ");
         print(updated);
 
