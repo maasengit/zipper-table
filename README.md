@@ -24,4 +24,8 @@ Manage changing data by zipper table
 5. 查询2020-01-03删除的数据：deleted=1 and end_date=2020-01-03
 6. 查询2020-01-01~2020-01-10增加的数据：created=1 and start_date>=2020-01-01 and start_date<=2020-01-10
 
-
+## 日常更新
+1. 当天数据插入临时表
+2. 关联昨天数据得到删除的数据
+3. 关联昨天数据得到增加的数据
+4. 关联昨天数据得到贡献的数据
