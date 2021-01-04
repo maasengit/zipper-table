@@ -13,5 +13,6 @@ CREATE TABLE `zipper`.`zipper_table` (
 CREATE TABLE `zipper`.`zipper_table_temp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `name` varchar(100) NOT NULL COMMENT '名称',
+  `sync_date` date NOT NULL COMMENT '同步时间',
    PRIMARY KEY (`id`)
   );

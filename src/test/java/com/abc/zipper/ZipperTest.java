@@ -28,7 +28,7 @@ public class ZipperTest {
 
     @Test
     public void test() {
-        List<Map<String, Object>> all = dao.findAll();
+        List<Map<String, Object>> all = dao.findAllValid();
         // 最初10行
         assertEquals(10, all.size());
         LOGGER.info("最初的数据：");
@@ -41,38 +41,38 @@ public class ZipperTest {
         cal.set(Calendar.DAY_OF_MONTH, 2);
         dao.create(11L, "张三", cal.getTime());
 
-        List<Map<String, Object>> created = dao.findCreated(cal.getTime());
+        List<Map<String, Object>> created = dao.findByCreatedDate(cal.getTime());
         assertEquals(1, created.size());
         assertEquals(11L, created.get(0).get("business_id"));
         assertEquals(ZipperDao.FOR_EVER_DATE, DateFormatUtils.format((Date) created.get(0).get("end_date"), "yyyy-MM-dd"));
         LOGGER.info("2020-01-02增加的数据: ");
         print(created);
-        all = dao.findAll();
+        all = dao.findAllValid();
         // 现在11行
         assertEquals(11, all.size());
 
         // 更新1
-        dao.update(1L, "李四", cal.getTime());
-        List<Map<String, Object>> updated = dao.findUpdated(cal.getTime());
+        dao.update(1L, "张三1", "李四", cal.getTime());
+        List<Map<String, Object>> updated = dao.findByUpdatedDate(cal.getTime());
         assertEquals(1L, updated.size());
         assertEquals("李四", updated.get(0).get("name"));
 
         LOGGER.info("2020-01-02更新的数据: ");
         print(updated);
 
-        all = dao.findAll();
+        all = dao.findAllValid();
         // 现在11行
         assertEquals(11, all.size());
         // 删除2
-        dao.delete(2L, cal.getTime());
-        dao.delete(1L, cal.getTime());
-        all = dao.findAll();
+        dao.delete(2L, "张三2", cal.getTime());
+        dao.delete(1L, "李四", cal.getTime());
+        all = dao.findAllValid();
         // 现在10行
         assertEquals(9, all.size());
         print(all);
 
         cal.set(Calendar.DAY_OF_MONTH, 1);
-        all = dao.findAll(cal.getTime());
+        all = dao.findAllValid(cal.getTime());
         // 现在10行
         assertEquals(10, all.size());
         LOGGER.info("2020-01-01存在的数据：");
@@ -82,10 +82,41 @@ public class ZipperTest {
         cal2.set(Calendar.YEAR, 2020);
         cal2.set(Calendar.MONTH, 0);
         cal2.set(Calendar.DAY_OF_MONTH, 2);
-        List<Map<String, Object>> created1 = dao.findCreated(cal.getTime(), cal2.getTime());
+        List<Map<String, Object>> created1 = dao.findByCreatedDate(cal.getTime(), cal2.getTime());
         assertEquals(11, created1.size());
         LOGGER.info(("2020-01-01~02增加的数据："));
         print(created1);
+
+        List<Map<String, Object>> allHistory = dao.findAllHistory(1L);
+        LOGGER.info(("1号记录的变化历史："));
+        print(allHistory);
+
+        allHistory = dao.findCreatedHistory(1L);
+        LOGGER.info(("1号记录的增加历史："));
+        print(allHistory);
+
+        allHistory = dao.findUpdatedHistory(1L);
+        LOGGER.info(("1号记录的更新历史："));
+        print(allHistory);
+
+        allHistory = dao.findDeletedHistory(1L);
+        LOGGER.info(("1号记录的删除历史："));
+        print(allHistory);
+
+        List<Map<String, Object>> createdRecords = dao.diffCreated();
+        LOGGER.info(("比较得到增加的记录："));
+        print(createdRecords);
+        for (Map<String, Object> record: createdRecords) {
+            dao.create((Long)record.get("business_id"), (String)record.get("name"), (Date) record.get("sync_date"));
+        }
+        List<Map<String, Object>> deletedRecords = dao.diffDeleted();
+        LOGGER.info(("比较得到删除的记录："));
+        print(deletedRecords);
+        for (Map<String, Object> record: deletedRecords) {
+            dao.delete((Long)record.get("business_id"), (String)record.get("name"), new Date());
+        }
+        LOGGER.info(("同步之后的结果："));
+        print(dao.findAllValid());
     }
 
     private void print(List<Map<String, Object>> data) {
