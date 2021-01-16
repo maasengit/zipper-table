@@ -23,6 +23,11 @@ Manage changing data by zipper table
 4. 查询2020-01-02更新的数据：created=0 and start_date=2020-01-02
 5. 查询2020-01-03删除的数据：deleted=1 and end_date=2020-01-03
 6. 查询2020-01-01~2020-01-10增加的数据：created=1 and start_date>=2020-01-01 and start_date<=2020-01-10
+7. 查询各月增加且月底还有效的数量：
+SELECT DATE_FORMAT(start_date, '%Y-%m') AS "t", COUNT(DISTINCT business_id) AS "c" 
+FROM zipper 
+WHERE end_date>last_day(start_date)
+GROUP BY t
 
 ## 日常更新
 1. 当天数据插入临时表
