@@ -26,11 +26,29 @@ CREATE TABLE `zipper`.`zipper_table_temp` (
 ```
 ## 维护数据
 1. 第一次全量插入所有数据
-2. 每天增量维护：比较今天与昨天的数据，得到增加、更新和删除的数据
+2. 每天增量维护：清空临时表，插入当天全量数据；比较临时表与正式表的数据，得到增加、更新和删除的数据
     1. 增加的数据，直接插入，生效日期为今天，失效日期为永久（9999-01-01）
-    2. 删除的数据，失效日期为今天
-    3. 更新的数据，失效日期为今天，同时插入一条数据，生效日期为今天，失效日期为永久
-
+    ```
+SELECT new.id AS business_id, new.name
+FROM zipper_table AS old RIGHT JOIN zipper_table_temp AS new
+ON old.business_id = new.id
+WHERE old.deleted = 1 OR old.business_id IS NULL
+```
+    2. 删除的数据，deleted=1, 失效日期为今天
+```
+SELECT old.id 
+FROM zipper_table AS old LEFT JOIN zipper_table_temp AS new
+ON old.business_id = new.id
+WHERE old.deleted = 0 AND new.id IS NULL
+```
+    3. 更新的数据，deleted=1,失效日期为今天，同时插入一条数据，生效日期为今天，失效日期为永久
+```
+SELECT old.id, new.id AS business_id, new.name
+FROM zipper_table AS old
+INNER JOIN zipper_table_temp AS new
+ON old.business_id = new.id 
+WHERE (old.name <> new.name) and old.deleted = 0
+```
 ## 详细设计 
 1. 增加三个字段：增加状态（created，0：更新，1：增加），删除状态（deleted：0：未删除，1：已删除）生效日期（start_date），失效日期（end_date）
 2. 2020-01-01增加（开琏）：（1，0, 2020-01-01，9999-01-01）
