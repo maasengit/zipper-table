@@ -16,6 +16,7 @@ CREATE TABLE `zipper`.`zipper_table` (
   `end_date` date NOT NULL COMMENT '失效时间',
    PRIMARY KEY (`id`)
   );
+ALTER TABLE `zipper`.`zipper_table` ADD INDEX (`business_id`,`name`);
 
 CREATE TABLE `zipper`.`zipper_table_temp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
