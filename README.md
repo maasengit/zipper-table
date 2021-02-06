@@ -63,14 +63,14 @@ WHERE (old.name <> new.name) and old.deleted = 0
 4. 查询2020-01-02更新的数据：created=0 and start_date=2020-01-02
 5. 查询2020-01-03删除的数据：deleted=1 and end_date=2020-01-03
 6. 查询2020-01-01~2020-01-10增加的数据：created=1 and start_date>=2020-01-01 and start_date<=2020-01-10
-7. 查询各月增加且月底还有效的数量：
-SELECT DATE_FORMAT(start_date, '%Y-%m') AS "t", COUNT(DISTINCT business_id) AS "c" 
+7. 按月统计累计总数：
+SELECT DATE_FORMAT(start_date, '%Y-%m') AS m, COUNT(DISTINCT business_id) AS c
 FROM zipper 
-WHERE end_date>last_day(start_date)
-GROUP BY t
+WHERE start_date<=m and end_date>last_day(start_date)
+GROUP BY m
 
 ## 日常更新
-1. 当天数据插入临时表
-2. 关联昨天数据得到删除的数据
-3. 关联昨天数据得到增加的数据
-4. 关联昨天数据得到贡献的数据
+1. 当天数据全量插入临时表
+2. 关联临时表得到删除的数据
+3. 关联临时表得到增加的数据
+4. 关联临时表得到更新的数据
